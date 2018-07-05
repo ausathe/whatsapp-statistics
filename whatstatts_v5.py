@@ -4,8 +4,6 @@ from bokeh.layouts import gridplot, row, layout
 from bokeh.models import ColumnDataSource, ranges, LabelSet, Div, SingleIntervalTicker, LinearAxis
 from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
-import numpy as np
-from bs4 import BeautifulSoup
 
 class Chat(object):
 	def __init__(self, file):
