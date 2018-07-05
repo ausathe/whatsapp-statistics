@@ -1,8 +1,8 @@
 # whatsapp-statistics
 A program to fetch some, and represent basic statistics from an exported whatsapp chat.
 
-<b>Usage:</b>
-Export a whatsapp chat (without media) -> run the script with the export.txt file.
+<b>Execution:</b>
+Export a whatsapp chat (without media) -> run the script with the export.txt file. Change file in main function.
 
 <b>Statistics shown:</b>
 1. Number of participants in the chat. (not current, but at some point during the chat history.)
