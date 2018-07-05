@@ -1,5 +1,5 @@
 # whatsapp-statistics
-A program to fetch some, and represent basic statistics from an exported whatsapp chat.
+A python program to fetch some, and represent basic statistics from an exported whatsapp chat.
 
 ## Execution
 Export a whatsapp chat (without media) -> run the script with the export.txt file. Change file in main function.
