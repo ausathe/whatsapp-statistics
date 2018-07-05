@@ -2,12 +2,10 @@ import re, math, os
 from bokeh.plotting import figure, output_file, show
 from bokeh.layouts import gridplot, row, layout
 from bokeh.models import ColumnDataSource, ranges, LabelSet, Div, SingleIntervalTicker, LinearAxis
-
 from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
 import numpy as np
 from bs4 import BeautifulSoup
-
 
 class Chat(object):
 	def __init__(self, file):
@@ -16,7 +14,6 @@ class Chat(object):
 		with open(self.file, "r") as chat:
 			self.chat_cntnt = chat.read()
 
-	# Analysis point 1, 4.
 	def number_of_messages(self):
 		"""Finds and returns self.tot_num_msgs and self.num_media"""
 		pttrn_num_msgs = re.compile(r'\b\d*/\d*/\d*, \d*:\d* [AP]M - (.*?): ')
@@ -27,7 +24,6 @@ class Chat(object):
 		self.num_media = len(matches)
 		return self.tot_num_msgs, self.num_media
 
-	# Analysis point 2 and member list.
 	def number_of_contributing_members(self):
 		"""Finds and returns self.num_mem and self.member_list"""
 		members = re.findall(r'\b\d*/\d*/\d*, \d*:\d* [AP]M - (.*?): ', self.chat_cntnt)
@@ -128,8 +124,6 @@ class Chat(object):
 				self.media_monthstamps
 				)
 
-
-
 	def dash_it_up(self):
 		# print("DASH IT UP BEGIN:\t\t" + datetime.strftime(datetime.now(), '%I:%M:%S'))
 		total_num_messages, total_num_media = self.number_of_messages()
@@ -145,8 +139,6 @@ class Chat(object):
 
 		output_file("./HTMLs/_STATISTICS_{}.html".format(os.path.basename(os.path.splitext(self.file)[0])))
 
-		# page_font = "SF Pro Display"	
-		
 		#PLOT 0: TITLE OF THE PAGE===========================================================================================================================#
 		title_plot = figure(plot_height=30, logo=None)
 		title_plot.title.text = "{} ({} participants)".format(os.path.basename(os.path.splitext(self.file)[0]), num_members)
@@ -160,8 +152,8 @@ class Chat(object):
 		xtick_font_size_value = (-1/7*num_members + 152/7) if num_members>=20 else 16
 		xtick_text_font_size = "{}px".format(xtick_font_size_value)
 		individual_bar_label_size = "{}px".format(xtick_font_size_value)
-
 		colors = [""]
+		
 		#PLOT 1: MESSAGE DISTRIBUTION===========================================================================================================================#
 		source = ColumnDataSource(dict(x=list(self.mem_msg_splitup.keys()), y=list(self.mem_msg_splitup.values())))
 
@@ -174,10 +166,10 @@ class Chat(object):
 							text_font_size=individual_bar_label_size, 
 							# text_font=page_font
 							)
-		plot1.vbar(	source=source,
-					x='x',
-					top='y',
-					width=0.8)
+		plot1.vbar(source=source,
+				x='x',
+				top='y',
+				width=0.8)
 		plot1.add_layout(labels)
 		plot1.xgrid.grid_line_color = None
 		plot1.y_range.start = 0
@@ -193,7 +185,6 @@ class Chat(object):
 		plot1.yaxis.axis_label_text_font_size = "16px"
 		# plot1.yaxis.axis_label_text_font = page_font
 
-
 		#PLOT 2: MEDIA DISTRIBUTION===========================================================================================================================#
 		source = ColumnDataSource(dict(x=list(self.mem_media_splitup.keys()), y=list(self.mem_media_splitup.values())))
 		plot2 = figure(x_range=list(self.mem_media_splitup.keys()), logo=None, sizing_mode="scale_width", plot_height=400)
@@ -205,10 +196,10 @@ class Chat(object):
 							text_font_size=individual_bar_label_size, 
 							# text_font=page_font
 							)
-		plot2.vbar(	source=source,
-					x='x',
-					top='y',
-					width=0.8, color="firebrick")
+		plot2.vbar(source=source,
+				x='x',
+				top='y',
+				width=0.8, color="firebrick")
 		plot2.add_layout(labels)
 		plot2.xgrid.grid_line_color = None
 		plot2.y_range.start = 0
@@ -291,8 +282,6 @@ class Chat(object):
 
 		timeBlockSpan_decision = timeBlockSpan(first_dt, last_dt)
 
-
-
 		# print("TBS decision generated" + datetime.strftime(datetime.now(), '%I:%M:%S'))
 
 		if timeBlockSpan_decision == 1:
@@ -326,7 +315,6 @@ class Chat(object):
 
 			xLabels = [datetime.strftime(x, "%B '%y") for x in all_months_msgs_distr.keys()]
 			y = list(all_months_msgs_distr.values())
-
 
 		# print(datetime.strftime(datetime.now(), '%I:%M:%S'))
 
@@ -376,8 +364,6 @@ class Chat(object):
 
 		timeBlockSpan_decision = timeBlockSpan(first_dt_media, last_dt_media)
 
-
-
 		# print("TBS decision generated" + datetime.strftime(datetime.now(), '%I:%M:%S'))
 
 		if timeBlockSpan_decision == 1:
@@ -412,7 +398,6 @@ class Chat(object):
 			xLabels = [datetime.strftime(x, "%B '%y") for x in all_months_media_distr.keys()]
 			y = list(all_months_media_distr.values())
 
-
 		# print(datetime.strftime(datetime.now(), '%I:%M:%S'))
 
 		num_bars_on_plot = len(xLabels)
@@ -437,17 +422,15 @@ class Chat(object):
 
 		#DASHBOARD ASSIMILATION===========================================================================================================================#
 		dashboard = layout(
-						children=[
-							[title_plot],
-							[plot3],
-							[plot1, plot2],
-							[plot4],
-							[plot5]
-							], 
-							sizing_mode="scale_width"
+				children=[
+					[title_plot],
+					[plot3],
+					[plot1, plot2],
+					[plot4],
+					[plot5]
+						], 
+				sizing_mode="scale_width"
 							)
-		#edit html-title
-
 		show(dashboard)
 		# print("DASH IT UP END:\t\t" + datetime.strftime(datetime.now(), '%I:%M:%S'))
 def main():
