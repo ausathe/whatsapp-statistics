@@ -432,7 +432,7 @@ class Chat(object):
 		show(dashboard)
 		# print("DASH IT UP END:\t\t" + datetime.strftime(datetime.now(), '%I:%M:%S'))
 def main():
-	chat = Chat("./chats/Whatsapp Chat with xyz.txt".format(C))
+	chat = Chat("./chats/WhatsApp Chat with xyz.txt")
 	chat.dash_it_up()
 	# print("{} done at {}".format(C, datetime.strftime(datetime.now(), '%I:%M:%S %p')))
 	
